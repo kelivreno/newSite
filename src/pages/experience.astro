@@ -1,0 +1,25 @@
+---
+import DitherCanvas from "@/components/DitherCanvas.astro"
+import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item"
+import { Section } from "@/components/ui/section"
+import { TypographyH1 } from "@/components/ui/typography"
+import { experience } from "@/data/site"
+import Layout from "@/layouts/Layout.astro"
+---
+
+<Layout title="Experience · Kelangit">
+  <Section>
+    <TypographyH1>Experience</TypographyH1>
+    <div class="thumb">
+      <DitherCanvas seed="portrait" algo="atkinson" w={3} h={4} label="Dithered portrait silhouette placeholder" />
+    </div>
+    {experience.map((entry) => (
+      <Item variant="outline">
+        <ItemContent>
+          <ItemTitle>{entry.title}</ItemTitle>
+          <ItemDescription>{entry.text}</ItemDescription>
+        </ItemContent>
+      </Item>
+    ))}
+  </Section>
+</Layout>

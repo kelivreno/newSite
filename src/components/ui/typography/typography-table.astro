@@ -1,0 +1,59 @@
+---
+import type { HTMLAttributes } from "astro/types"
+
+import { cn } from "@/lib/utils"
+
+type Size = "sm" | "default" | "lg"
+type Props = HTMLAttributes<"table"> & {
+  containerClass?: string
+  size?: Size
+}
+
+const {
+  class: className,
+  containerClass,
+  size = "default",
+  ...props
+} = Astro.props
+---
+
+<div
+  data-slot="typography-table-container"
+  data-size={size}
+  class={cn(containerClass)}
+>
+  <table
+    data-slot="typography-table"
+    data-size={size}
+    class={cn(className)}
+    {...props}
+  >
+    <slot />
+  </table>
+</div>
+
+<style is:global>
+  @reference "@/styles/global.css";
+
+  [data-slot="typography-table-container"] {
+    @apply border-border my-6 w-full overflow-y-auto border;
+  }
+
+  [data-slot="typography-table"],
+  [data-slot="typography"] > table {
+    @apply w-full border-collapse;
+  }
+
+  [data-slot="typography-table"][data-size="sm"] {
+    @apply text-sm;
+  }
+
+  [data-slot="typography-table"][data-size="default"],
+  [data-slot="typography"] > table {
+    @apply text-base;
+  }
+
+  [data-slot="typography-table"][data-size="lg"] {
+    @apply text-lg;
+  }
+</style>

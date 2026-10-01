@@ -1,0 +1,31 @@
+---
+import DitherCanvas from "@/components/DitherCanvas.astro"
+import { Badge } from "@/components/ui/badge"
+import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item"
+
+interface Props {
+  project: {
+    slug: string
+    name: string
+    description: string
+    tags: string[]
+    status?: string
+  }
+}
+
+const { project } = Astro.props
+---
+
+<Item variant="outline">
+  <ItemMedia class="thumb">
+    <DitherCanvas seed={project.slug} algo="floydSteinberg" w={4} h={3} label={`${project.name} thumbnail`} />
+  </ItemMedia>
+  <ItemContent>
+    <ItemTitle>{project.name}</ItemTitle>
+    <ItemDescription>{project.description}</ItemDescription>
+    <div class="badges">
+      {project.tags.map((tag) => <Badge variant="outline">{tag}</Badge>)}
+      {project.status && <Badge>{project.status}</Badge>}
+    </div>
+  </ItemContent>
+</Item>

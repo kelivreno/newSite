@@ -1,0 +1,97 @@
+---
+interface Props {
+  seed: string
+  algo: "bayer" | "floydSteinberg" | "atkinson"
+  w: number
+  h: number
+  label: string
+}
+
+const { seed, algo, w, h, label } = Astro.props
+---
+
+<canvas
+  aria-label={label}
+  data-dither
+  data-seed={seed}
+  data-algo={algo}
+  data-w={w}
+  data-h={h}
+  role="img"
+  style={`aspect-ratio:${w}/${h}`}
+></canvas>
+
+<script>
+  import { atkinson, bayer, floydSteinberg, ink } from "@/scripts/dither"
+
+  const hash = (text: string) => {
+    let value = 2166136261
+    for (const char of text) value = Math.imul(value ^ char.charCodeAt(0), 16777619)
+    return value >>> 0
+  }
+
+  const draw = (canvas: HTMLCanvasElement) => {
+    const { seed = "", algo = "bayer", w = "4", h = "3" } = canvas.dataset
+    const width = Math.max(96, Math.min(160, Math.round(canvas.clientWidth / 5)))
+    const height = Math.round(width * Number(h) / Number(w))
+    const source = document.createElement("canvas")
+    source.width = width
+    source.height = height
+    const context = source.getContext("2d", { willReadFrequently: true })!
+    let state = hash(seed)
+    const random = () => ((state = Math.imul(state ^ state >>> 15, 1 | state)) >>> 0) / 4294967296
+    const gradient = context.createRadialGradient(
+      width * (.25 + random() * .5), height * (.25 + random() * .5), 2,
+      width / 2, height / 2, Math.max(width, height) * .7,
+    )
+    gradient.addColorStop(0, "#fff")
+    gradient.addColorStop(1, "#000")
+    context.fillStyle = gradient
+    context.fillRect(0, 0, width, height)
+    const pixels = context.getImageData(0, 0, width, height)
+    for (let i = 0; i < pixels.data.length; i += 4) {
+      const noise = (random() - .5) * 90
+      pixels.data[i] += noise
+      pixels.data[i + 1] += noise
+      pixels.data[i + 2] += noise
+    }
+    // TODO: Replace the portrait silhouette with a real photo source.
+    if (seed === "portrait") {
+      context.putImageData(pixels, 0, 0)
+      context.fillStyle = "#000"
+      context.beginPath()
+      context.arc(width / 2, height * .34, width * .16, 0, Math.PI * 2)
+      context.ellipse(width / 2, height * .83, width * .32, height * .38, 0, 0, Math.PI * 2)
+      context.fill()
+      pixels.data.set(context.getImageData(0, 0, width, height).data)
+    }
+    const styles = getComputedStyle(document.documentElement)
+    const fg = ink(styles.getPropertyValue("--foreground"))
+    const bg = ink(styles.getPropertyValue("--background"))
+    const result = algo === "atkinson" ? atkinson(pixels, fg, bg)
+      : algo === "floydSteinberg" ? floydSteinberg(pixels, fg, bg)
+      : bayer(pixels, 8, fg, bg)
+    source.getContext("2d")!.putImageData(result, 0, 0)
+    canvas.width = Math.max(1, Math.round(canvas.clientWidth * devicePixelRatio))
+    canvas.height = Math.max(1, Math.round(canvas.clientHeight * devicePixelRatio))
+    const output = canvas.getContext("2d")!
+    output.imageSmoothingEnabled = false
+    output.drawImage(source, 0, 0, canvas.width, canvas.height)
+  }
+
+  const canvases = [...document.querySelectorAll<HTMLCanvasElement>("[data-dither]")]
+  const redraw = () => canvases.forEach(draw)
+  let timer = 0
+  const queue = () => { clearTimeout(timer); timer = window.setTimeout(redraw, 120) }
+  new MutationObserver(redraw).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
+  addEventListener("resize", queue)
+  redraw()
+</script>
+
+<style>
+  canvas {
+    display: block;
+    image-rendering: pixelated;
+    width: 100%;
+  }
+</style>

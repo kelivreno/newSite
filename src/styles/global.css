@@ -1,0 +1,260 @@
+@import "tailwindcss";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #fff;
+  --foreground: #000;
+  --card: #fff;
+  --card-foreground: #000;
+  --popover: #fff;
+  --popover-foreground: #000;
+  --primary: #000;
+  --primary-foreground: #fff;
+  --secondary: #fff;
+  --secondary-foreground: #000;
+  --muted: #fff;
+  --muted-foreground: #000;
+  --accent: #000;
+  --accent-foreground: #fff;
+  --destructive: #000;
+  --destructive-foreground: #fff;
+  --border: #000;
+  --input: #000;
+  --ring: #000;
+  --chart-1: #000;
+  --chart-2: #fff;
+  --chart-3: #000;
+  --chart-4: #fff;
+  --chart-5: #000;
+  --sidebar: #fff;
+  --sidebar-foreground: #000;
+  --sidebar-primary: #000;
+  --sidebar-primary-foreground: #fff;
+  --sidebar-accent: #000;
+  --sidebar-accent-foreground: #fff;
+  --sidebar-border: #000;
+  --sidebar-ring: #000;
+  --radius: 0;
+}
+
+.dark {
+  --background: #000;
+  --foreground: #fff;
+  --card: #000;
+  --card-foreground: #fff;
+  --popover: #000;
+  --popover-foreground: #fff;
+  --primary: #fff;
+  --primary-foreground: #000;
+  --secondary: #000;
+  --secondary-foreground: #fff;
+  --muted: #000;
+  --muted-foreground: #fff;
+  --accent: #fff;
+  --accent-foreground: #000;
+  --destructive: #fff;
+  --destructive-foreground: #000;
+  --border: #fff;
+  --input: #fff;
+  --ring: #fff;
+  --chart-1: #fff;
+  --chart-2: #000;
+  --chart-3: #fff;
+  --chart-4: #000;
+  --chart-5: #fff;
+  --sidebar: #000;
+  --sidebar-foreground: #fff;
+  --sidebar-primary: #fff;
+  --sidebar-primary-foreground: #000;
+  --sidebar-accent: #fff;
+  --sidebar-accent-foreground: #000;
+  --sidebar-border: #fff;
+  --sidebar-ring: #fff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+  --font-sans: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --font-mono: var(--font-sans);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  html {
+    font-family: var(--font-sans);
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: inherit;
+  }
+  :where(h1, h2, h3, h4, h5, h6) {
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+  a:hover {
+    background: var(--foreground);
+    color: var(--background);
+  }
+  :where(a, button, input, textarea, select):focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 3px;
+  }
+  :where([class*="border"]) {
+    border-style: solid;
+    border-width: 2px;
+  }
+}
+
+.shell {
+  margin: auto;
+  max-width: 760px;
+  padding: 1rem;
+}
+
+header {
+  align-items: center;
+  border-bottom: 2px solid;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr auto;
+  padding-block: 1rem;
+}
+
+.header-actions { align-items: center; display: flex; gap: .75rem; }
+.menu-button, .mobile-menu { display: none; }
+
+nav {
+  display: flex;
+  flex-wrap: nowrap;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  justify-content: space-evenly;
+  min-width: 0;
+  width: 100%;
+}
+
+main { min-height: 70vh; padding-block: 2.5rem; }
+footer { border-top: 2px solid; padding-block: 1rem; }
+[data-slot="section"] { gap: .75rem; padding-block: 0; }
+[data-slot="section"] + [data-slot="section"] { margin-top: 2.5rem; }
+:is(h1, h2, h3) { margin-block: 0 !important; }
+h1 {
+  font-size: clamp(2rem, 9vw, 3rem) !important;
+  overflow-wrap: anywhere;
+}
+[data-slot="item"] { border: 2px solid; }
+[data-slot="item"]:is(:hover, :focus-within) {
+  background: var(--foreground);
+  color: var(--background);
+}
+[data-slot="item"]:is(:hover, :focus-within) * {
+  border-color: var(--background) !important;
+  color: var(--background) !important;
+}
+[data-slot="item"]:is(:hover, :focus-within) [data-slot="badge"] {
+  background: var(--foreground) !important;
+}
+.hero-links, .badges { display: flex; flex-wrap: wrap; gap: .75rem; }
+[data-slot="button"] {
+  min-height: 44px;
+  padding-inline: 1rem;
+}
+[data-theme-toggle] { min-width: 44px; padding-inline: 0; }
+.hero-art { width: 100%; }
+.hero-art canvas { height: 120px; }
+.thumb { flex: 0 0 120px; width: 120px; }
+
+@media (max-width: 640px) {
+  body {
+    font-size: .9rem;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h2 { font-size: 1.25rem !important; }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+  }
+  header > nav { display: none; }
+  .menu-button {
+    background: var(--background);
+    border: 2px solid var(--foreground);
+    color: var(--foreground);
+    display: block;
+    font: inherit;
+    height: 44px;
+    min-width: 44px;
+    padding: 0;
+  }
+  .mobile-menu[hidden] { display: none; }
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .mobile-menu a {
+    border: 2px solid var(--foreground);
+    border-top: 0;
+    min-height: 44px;
+    padding: .625rem 1rem;
+  }
+
+  [data-slot="section"] {
+    padding-block: 0;
+  }
+
+  .hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+  }
+}

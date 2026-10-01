@@ -1,11 +1,33 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import DitherCanvas from "@/components/DitherCanvas.astro"
+import ProjectEntry from "@/components/ProjectEntry.astro"
+import { Button } from "@/components/ui/button"
+import { Section } from "@/components/ui/section"
+import { TypographyH1, TypographyH2, TypographyP } from "@/components/ui/typography"
+import { projects, site } from "@/data/site"
+import Layout from "@/layouts/Layout.astro"
 ---
 
 <Layout>
-	<Welcome />
+	<Section>
+		<TypographyH1 size="lg">{site.name}</TypographyH1>
+		<TypographyP>{site.intro}</TypographyP>
+		<div class="hero-art" aria-hidden="true">
+			<DitherCanvas seed="hero" algo="bayer" w={16} h={3} label="" />
+		</div>
+		<div class="hero-links">
+			<Button as="a" href="/projects">View projects</Button>
+			<Button as="a" href={site.links.github} variant="outline">GitHub</Button>
+		</div>
+	</Section>
+	<Section>
+		<TypographyH2>Projects</TypographyH2>
+		{projects.slice(0, 3).map((project) => <ProjectEntry project={project} />)}
+		<a href="/projects">View all projects</a>
+	</Section>
+	<Section>
+		<TypographyH2>Currently learning</TypographyH2>
+		<TypographyP>{site.learning.slice(0, 3).join(", ")}</TypographyP>
+		<TypographyP>{site.learning[3]}</TypographyP>
+	</Section>
 </Layout>

@@ -1,0 +1,43 @@
+---
+import type { HTMLAttributes } from "astro/types"
+
+import { cn } from "@/lib/utils"
+
+type Size = "sm" | "default" | "lg"
+type Props = HTMLAttributes<"p"> & {
+  size?: Size
+}
+
+const { class: className, size = "default", ...props } = Astro.props
+---
+
+<p data-slot="typography-p" data-size={size} class={cn(className)} {...props}>
+  <slot />
+</p>
+
+<style is:global>
+  @reference "@/styles/global.css";
+
+  [data-slot="typography-p"],
+  [data-slot="typography"] > p {
+    @apply leading-7;
+  }
+
+  [data-slot="typography-p"][data-size="sm"] {
+    @apply text-sm;
+  }
+
+  [data-slot="typography-p"][data-size="default"],
+  [data-slot="typography"] > p {
+    @apply text-base;
+  }
+
+  [data-slot="typography-p"][data-size="lg"] {
+    @apply text-lg;
+  }
+
+  [data-slot="typography-p"]:not(:first-child),
+  [data-slot="typography"] > p:not(:first-child) {
+    @apply mt-6;
+  }
+</style>

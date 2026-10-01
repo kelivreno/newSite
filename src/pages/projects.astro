@@ -1,0 +1,14 @@
+---
+import ProjectEntry from "@/components/ProjectEntry.astro"
+import { Section } from "@/components/ui/section"
+import { TypographyH1 } from "@/components/ui/typography"
+import { projects } from "@/data/site"
+import Layout from "@/layouts/Layout.astro"
+---
+
+<Layout title="Projects · Kelangit">
+  <Section>
+    <TypographyH1>Projects</TypographyH1>
+    {projects.map((project) => <ProjectEntry project={project} />)}
+  </Section>
+</Layout>
